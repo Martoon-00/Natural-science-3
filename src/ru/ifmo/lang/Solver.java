@@ -1,7 +1,7 @@
 package ru.ifmo.lang;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public interface Solver {
-    ArrrayList<Tuple> solve(Tuple init, int n, double step, EqualityParameters params);
+    ArrayList<Tuple> solve(Tuple init, int n, double step, EqualityParameters params);
 }
