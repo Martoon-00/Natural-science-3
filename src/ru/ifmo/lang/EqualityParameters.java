@@ -1,8 +1,5 @@
 package ru.ifmo.lang;
 
-/**
- * Created by asus on 14.05.2015.
- */
 public class EqualityParameters {
     public final double r;
     public final double sigma;

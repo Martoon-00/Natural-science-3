@@ -1,8 +1,5 @@
 package ru.ifmo.lang;
 
-/**
- * Created by asus on 14.05.2015.
- */
 public class Tuple {
     public final double x;
     public final double y;
