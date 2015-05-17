@@ -12,6 +12,6 @@ public class Tuple {
     }
 
     public String toString() {
-        return String.format("(%.3f, %.3f, %.3f)", x, y, z);
+        return String.format("(%.3f; %.3f; %.3f)", x, y, z);
     }
 }
