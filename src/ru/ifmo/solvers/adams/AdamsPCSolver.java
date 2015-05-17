@@ -3,6 +3,7 @@ package ru.ifmo.solvers.adams;
 import ru.ifmo.lang.EqualityParameters;
 import ru.ifmo.lang.Solver;
 import ru.ifmo.lang.Tuple;
+import ru.ifmo.solvers.rungekutta.RungeKutta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,14 +15,7 @@ public class AdamsPCSolver implements Solver {
 
     @Override
     public ArrayList<Tuple> solve(Tuple init, int n, double step, EqualityParameters params) {
-        // TODO: replace with Rungi-Kutta call
-        // ******************************
-        ArrayList<Tuple> ans = new ArrayList<>();
-        ans.add(init);
-        ans.add(new Tuple(0, 1e3, 1e-3));
-        ans.add(init);
-        ans.add(init);
-        // ******************************
+        ArrayList<Tuple> ans = new RungeKutta().solve(init, Math.min(4, n), step, params);
 
         ;;;;;;;;;;;;
         ;;  ;;;;  ;;
