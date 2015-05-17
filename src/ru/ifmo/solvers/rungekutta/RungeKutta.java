@@ -52,9 +52,9 @@ public class RungeKutta implements Solver {
             double ky3 = g(x0 + kx2 * step, y0 + ky2 * step, z0 + kz2 * step);
             double kz3 = h(x0 + kx2 * step, y0 + ky2 * step, z0 + kz2 * step);
 
-            x0 = kx3;
-            y0 = ky3;
-            z0 = kz3;
+            x0 += step * (kx0 + 2 * kx1 + 2 * kx2 + kx3) / 6;
+            y0 += step * (ky0 + 2 * ky1 + 2 * ky2 + ky3) / 6;
+            z0 += step * (kz0 + 2 * kz1 + 2 * kz2 + kz3) / 6;
             list.add(new Tuple(x0, y0, z0));
         }
 
