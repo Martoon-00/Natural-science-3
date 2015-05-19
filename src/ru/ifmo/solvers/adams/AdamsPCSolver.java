@@ -1,6 +1,7 @@
 package ru.ifmo.solvers.adams;
 
 import ru.ifmo.lang.EqualityParameters;
+import ru.ifmo.lang.Equation;
 import ru.ifmo.lang.Solver;
 import ru.ifmo.lang.Tuple;
 import ru.ifmo.solvers.rungekutta.RungeKutta;
@@ -10,8 +11,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class AdamsPCSolver implements Solver {
+
+    private final ArrayList<BiFunction<Tuple, EqualityParameters, Double>> funcs = new ArrayList<>();
+
+    public AdamsPCSolver() {
+        funcs.add((t, params) -> params.sigma * (-t.x + t.y));
+        funcs.add((t, params) -> -t.x * t.z + params.r * t.x - t.y);
+        funcs.add((t, params) -> t.x * t.y - params.b * t.z);
+    }
+
+    public AdamsPCSolver(Equation eq) {
+        funcs.add(eq::f);
+        funcs.add(eq::g);
+        funcs.add(eq::h);
+    }
+
 
     @Override
     public ArrayList<Tuple> solve(Tuple init, int n, double step, EqualityParameters params) {
@@ -25,11 +42,11 @@ public class AdamsPCSolver implements Solver {
         ;;;      ;;;
         ;;;;;;;;;;;;
 
-        ArrayList<Function<Tuple, Double>> f = new ArrayList<>();
-        f.add(t -> params.sigma * (-t.x + t.y));
-        f.add(t -> -t.x * t.z + params.r * t.x - t.y);
-        f.add(t -> t.x * t.y - params.b * t.z);
-
+        ArrayList<Function<Tuple, Double>> f;
+        {
+            final Function<BiFunction<Tuple, EqualityParameters, Double>, Function<Tuple, Double>> mapper = g -> t -> g.apply(t, params);
+            f = new ArrayList<>(funcs.stream().map(mapper).collect(Collectors.toList()));
+        }
         BiFunction<Tuple, Integer, Double> componentSelector = (t, k) -> k == 0 ? t.x : k == 1 ? t.y : t.z;
 
         BiFunction<List<Double>, Integer, Double> linearCombination = (coefs, component) -> {
